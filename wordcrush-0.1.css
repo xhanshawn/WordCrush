@@ -1,0 +1,128 @@
+.cube{
+
+	display: inline-block;
+
+	/* text */
+	text-decoration: none;
+	text-align: center;
+	color: #99bbff;
+	  
+	/* coloring */
+	border-radius: 10px;
+	border: 1px solid #b3b3b3;
+	background-color: #fbfbfb;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+
+	/* computed */
+	margin: 3px 5px 3px 5px;
+	width: 50px;
+	height: 50px;
+
+	/* animation */
+	-webkit-transition: background-color 0.5s ease, color 0.5s ease; 
+	-moz-transition: background-color 0.5s ease, color 0.5s ease;
+	 -o-transition: background-color 0.5s ease, color 0.5s ease;
+	    transition: background-color 0.5s ease, color 0.5s ease;
+
+}
+
+.correct{
+	color: white;
+	background-color: #99bbff;
+	box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.active{
+	color: white;
+	background-color: #99bbff;
+	box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.cube-text{
+	display: table-cell;
+
+	font-size: 28px;
+
+	vertical-align: middle;
+	width: 50px;
+  	height: 50px;
+  	z-index: -1px;
+}
+
+#play-panel, #selected-word, #word-found{
+
+	/* Disable user selection! */
+	-webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+     -khtml-user-select: none; /* Konqueror */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  not supported by any browser */
+  	cursor: default;
+}
+
+#word-crush{
+
+	border: 3px solid white;
+	border-radius: 10px;
+}
+
+/* Info Panel */
+#info-panel{
+	color: white;
+	padding: 10px 15px 10px 15px;
+}
+
+.board{
+	border: 2px solid white;
+    border-radius: 5px;
+    color: white;
+
+	padding: 10px 5px 10px 5px;
+}
+
+.board-iv{
+	padding: 10px 5px 10px 5px;
+}
+
+#selected-word{
+	font-size: 15px;
+}
+
+/* Play panel */
+#play-panel .row{
+	/*text-align: center;*/
+	padding: 0px 10px 0px 10px;
+}
+
+#play-panel{
+	padding-top: 10px;
+	padding-bottom: 5px;
+}
+
+/* Back ground colors */
+.bg-blue{
+	background-color: #cce6ff;
+}
+
+.bg-pink{
+	background-color: #ffb3b3;
+}
+
+.bg-default{
+	background-color: #fbfbfb;
+}
+
+/* Sizes */
+.size-4{
+	max-width: 270px;
+}
+
+.size-2{
+	max-width: 135px;
+}
+
+.size-1{
+	max-width: 65px;
+}

@@ -1,5 +1,10 @@
 
-$.fn.wordcrush = function(e) {
+$.fn.wordcrush = function(options = {}) {
+	const word_10000_url = "https://cdn.rawgit.com/xhanshawn/WordCrush/master/data/word_10000.js";
+	$.getScript(word_10000_url, function(data, textStatus, jqxhr) {
+		wordPanel.init(size).update();
+	});
+
 	const size = 4;
 	const template = `
 		<div class="container size-4 bg-pink" id="word-crush">
@@ -24,10 +29,6 @@ $.fn.wordcrush = function(e) {
 		</div>
 	`;
 	$(this).append(template);
-	word_10000_url = "https://cdn.rawgit.com/xhanshawn/WordCrush/master/data/word_10000.js";
-	$.getScript(word_10000_url, function(data, textStatus, jqxhr) {
-		wordPanel.init(size).update();
-	});
 }
 
 const wordMatrix = {

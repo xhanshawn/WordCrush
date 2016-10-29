@@ -12,11 +12,19 @@ Download the page and demo it.
 
 ## Usage
 
+Import javascript file:
+
+    <script type="text/javascript" src="https://cdn.rawgit.com/xhanshawn/WordCrush/master/wordcrush-0.1.js"></script>
+
+Import Stylesheet:
+
+    <link rel="stylesheet" href="https://cdn.rawgit.com/xhanshawn/WordCrush/master/wordcrush-0.1.css">
+
+Then call wordcrush() function to insert a wordcrush in the element:
+
       $('some-div').wordcrush();
 
 Then the game will show up in that div.
-
-
 
 ## Development
 

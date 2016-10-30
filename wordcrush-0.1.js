@@ -1,23 +1,53 @@
+let cube_color = "";
 
 $.fn.wordcrush = function(options = {}) {
 	const word_10000_url = "https://cdn.rawgit.com/xhanshawn/WordCrush/master/data/word_10000.js";
+	const THEMES = {
+		"blue": {
+			bg: "blue",
+			cube: "cube-blue"
+		},
+		"pink": {
+			bg: "pink"
+		},
+		"Halloween": {
+			bg: "black",
+			cube: "cube-orange"
+		}
+	};
+
+	let size = 5;
+	let theme = THEMES['blue'];
+	if(options){
+		if(options.size){
+			if(options.size > 4 && options.size <= 7) size = options.size;
+			else console.error("Unaccepted size. Size should be between 4 and 7.");
+		}
+
+		if(options.theme) {
+			if(THEMES[options.theme]) theme = THEMES[options.theme];
+			else console.error("Unaccepted theme name.");
+		}
+	}
+
+	cube_color = theme.cube ? theme.cube : "";
+
 	$.getScript(word_10000_url, function(data, textStatus, jqxhr) {
 		wordPanel.init(size).update();
 	});
 
-	const size = 4;
 	const template = `
-		<div class="container size-4 bg-pink" id="word-crush">
+		<div class="container size-${size} bg-${theme.bg}" id="word-crush">
 			<div class="row" id="info-panel">
 				<div class="col-xs-8 board-iv">
-					<div class="bg-pink" id="alert-board">
+					<div class="" id="alert-board">
 						<span class="" id="">Word Crush!</span>
 					</div>
-					<div class="bg-pink" id="word-board">
+					<div class="" id="word-board">
 						<span class="" id="selected-word"> </span>
 					</div>
 				</div>
-				<div class="col-xs-4 board bg-pink pull-right" id="score-board">
+				<div class="col-xs-4 board pull-right" id="score-board">
 					SCORE:<br>
 					<span class="" id="score">0</span>
 				</div>
@@ -53,14 +83,17 @@ const wordMatrix = {
 			}
 		}
 	},
-	// Draw a randome key from collection with options
+	// Draw a randome key from collection with options.
 	// options - options which will apply for draw:
-	//	   filter - only draw key from collection with f
+	//	   filter  - only draw key from collection with f.
+	//	   weights - An hashmap consists of value - weight key value pair
+	//               high weight will have high possiblity to be drawn.
 	drawFrom(collection, options){
 		if(!collection.length) throw 'EmptyCollection';
 		if(options && options.debug_mode) debugger
-		let filtered_collection = [];
-		let select = () => true;
+		const pool = [];
+		let select = (v) => true;
+		const weights = options ? options.weights : null;
 
 		// collection should be object or array
 		if(typeof collection === 'object'){
@@ -78,19 +111,39 @@ const wordMatrix = {
 				}
 			}
 
+			let weight = 0;
 			// get filtered keys from collection
 			if(Array.isArray(collection)) {
 				collection.forEach(function(v, i){
-					if(select(v)) filtered_collection.push(i);
-			  });
+					if(select(v)) {
+						const w  = weights && weights[v] ? weights[v] : 1;
+						weight += w;
+						pool.push({
+							weight : weight,
+							index  : i
+						});
+					}
+			    });
 			} else {
 				for(let k in collection){
-					if(select(collection[k])) filtered_collection.push(k);
+					if(select(collection[k])) {
+						const w  = weights && weights[collection[k]] ? weights[collection[k]] : 1;
+						weight += w;
+						pool.push({
+							weight : weight,
+							index  : i
+						});
+					}
 				}
 			}
 
-			const rani = Math.floor((Math.random() * filtered_collection.length));
-			return filtered_collection[rani];
+			const rann = Math.random() * weight;
+			let last_weight = 0;
+			for(let e of pool){
+				if(rann <= e.weight && rann > last_weight) return e.index;
+				last_weight = e.weight
+			}
+			return pool[0].index;
 		}
 	},
 	// Generate a random postion near the input postion.
@@ -151,7 +204,25 @@ const wordMatrix = {
 		});
 	},
 	randomChar() { 
-		return String.fromCharCode(Math.floor((Math.random() * 26)) + 'A'.charCodeAt(0)); 
+		const weights = {};
+		const WORD_FREQ = [
+			"AEI",
+			"DHMNORST",
+			"BCFGLPUWY",
+			"JKQVXZ"
+		];
+		const WEIGHTS = [120,50,20,1];
+		const chars = [];
+		WORD_FREQ.forEach((str, i) => {
+			for(const c of str){
+				weights[c] = WEIGHTS[i];
+				chars.push(c);
+			}
+		});
+		this.weights = weights;
+		return chars[this.drawFrom(chars, {
+			weights : weights
+		})];
  	},
  	generate(size) {
  		if(size) this.SIZE = size;
@@ -258,7 +329,7 @@ const wordPanel = {
 					}, 400);
 				});
 
-				$('#score').text(()=> score + selectedWord.length * 100);
+				$('#score').text(()=> score += selectedWord.length * 100);
 				console.log(selectedWord);
 				gotWord = false;
 			} else $('#selected-word').removeClass('alert-success');
@@ -301,10 +372,12 @@ const wordPanel = {
 	},
 
 	newCube(i, j, randomChar) {
-		const cube = $('<span>', { 'class': 'cube' }).attr('data-x', i)
-													 .attr('data-y', j)
-											         .append($('<span>', { 'class': 'cube-text' })
-													 .text(() => randomChar ? wordMatrix.randomChar() : wordMatrix.M[i][j]));
+		const cube = $('<span>', {
+					 	 'class': `cube ${cube_color}`
+					 }).attr('data-x', i)
+		               .attr('data-y', j)
+			           .append($('<span>', { 'class': 'cube-text' })
+					   .text(() => randomChar ? wordMatrix.randomChar() : wordMatrix.M[i][j]));
   
 		cube.on('mousedown', function(e){
     		isDragging = true;

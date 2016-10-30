@@ -18,13 +18,34 @@ Import javascript file:
 
 Import Stylesheet:
 
-    <link rel="stylesheet" href="https://cdn.rawgit.com/xhanshawn/WordCrush/master/wordcrush-0.1.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/xhanshawn/WordCrush/master/wordcrush.css">
 
 Then call wordcrush() function to insert a wordcrush in the element:
 
       $('some-div').wordcrush();
 
-Then the game will show up in that div.
+The game will show up in that div.
+
+Options:
+
+*Size:
+
+    You can customize the size of the play panel, for example:
+      `$('some-div').wordcrush({
+            size: 5
+       });`
+    Then it will generate a 5 X 5 play panel.
+    size from 4 to 7 now are accecpted.
+
+*Theme:
+
+    You can use theme option, for example
+      `$('some-div').wordcrush({
+            theme: "pink"
+       });`
+    Then it will create a play panel with theme with pink color. Default is pink. 
+    Now there are pink, blue and Halloween themes available.
+
 
 ## Development
 

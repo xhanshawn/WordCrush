@@ -21,9 +21,27 @@
 	<div class="container" id="word-crush"></div>
 	<script type="text/javascript">
 		$(() => {
-			$('#word-crush').wordcrush();
+			$('#word-crush').wordcrush({
+				size: 7,
+				theme: 'Halloween'
+			});
 		});
 	</script>
 </body>
 	<script type="text/javascript" src="wordcrush-0.1.js"></script>
+	<script type="text/javascript">
+			const occrs = {};
+			for(let i = 0; i < 1000; i ++) {
+				if(occrs[wordMatrix.randomChar()]) occrs[wordMatrix.randomChar()] ++;
+				else occrs[wordMatrix.randomChar()] = 1;
+			}
+
+			for(const key in occrs) {
+				occrs[key] /= 1000;
+			}
+			const keys = Object.keys(occrs);
+			keys.sort((a, b) => occrs[a] < occrs[b]);
+			console.log(keys);
+			console.log(occrs);
+	</script>
 </html>
